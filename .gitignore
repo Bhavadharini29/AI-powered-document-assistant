@@ -1,0 +1,24 @@
+# Ignore Project Overview
+PROJECT_OVERVIEW.md
+
+# Ignore Environment Variables and API Keys
+.env
+*.properties
+*.yml
+!docker-compose.yml
+
+# Ignore Log Files
+*.log
+
+# Ignore IDE Configuration Files
+.idea/
+.vscode/
+*.iml
+
+# Java & Spring Boot
+backend/target/
+!backend/.mvn/wrapper/maven-wrapper.jar
+
+# Frontend
+frontend/node_modules/
+frontend/dist/

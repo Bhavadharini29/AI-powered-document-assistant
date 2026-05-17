@@ -1,0 +1,45 @@
+#!/bin/sh
+# ----------------------------------------------------------------------------
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#    https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+# ----------------------------------------------------------------------------
+
+BASEDIR="$(cd "$(dirname "$0")" && pwd)"
+WRAPPER_DIR="$BASEDIR/.mvn/wrapper"
+WRAPPER_JAR="$WRAPPER_DIR/maven-wrapper.jar"
+WRAPPER_PROPERTIES="$WRAPPER_DIR/maven-wrapper.properties"
+
+if [ ! -f "$WRAPPER_JAR" ]; then
+  mkdir -p "$WRAPPER_DIR"
+  WRAPPER_URL="$(grep -E '^wrapperUrl=' "$WRAPPER_PROPERTIES" | sed 's/^wrapperUrl=//')"
+  if [ -z "$WRAPPER_URL" ]; then
+    echo "Could not find wrapperUrl in $WRAPPER_PROPERTIES"
+    exit 1
+  fi
+  if command -v curl >/dev/null 2>&1; then
+    curl -fsSL "$WRAPPER_URL" -o "$WRAPPER_JAR" || exit 1
+  elif command -v wget >/dev/null 2>&1; then
+    wget -q "$WRAPPER_URL" -O "$WRAPPER_JAR" || exit 1
+  else
+    echo "Neither curl nor wget found; cannot download Maven Wrapper."
+    exit 1
+  fi
+fi
+
+export MAVEN_PROJECTBASEDIR="$BASEDIR"
+exec java -classpath "$WRAPPER_JAR" "-Dmaven.multiModuleProjectDirectory=$MAVEN_PROJECTBASEDIR" org.apache.maven.wrapper.MavenWrapperMain "$@"
+
