@@ -1,4 +1,4 @@
-# RAG Chatbot using Spring AI and React
+# RAG Document Chatbot using Spring AI 
 
 This is a complete Retrieval-Augmented Generation (RAG) chatbot application.
 
